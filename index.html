@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chitram - Elevate Your Images</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Using Cropper.js for cropping functionality -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" />
+</head>
+
+<body>
+    <div class="app-container">
+        <header>
+            <div class="logo">CHITRAM</div>
+            <p class="tagline">Elevate your images with precision and speed</p>
+            <nav class="main-menu">
+                <button class="nav-btn active" data-target="home">All Tools</button>
+                <button class="nav-btn" data-target="compress">Compress</button>
+                <button class="nav-btn" data-target="crop">Crop</button>
+                <button class="nav-btn" data-target="resize">Resize</button>
+                <button class="nav-btn" data-target="convert">Convert</button>
+                <button class="nav-btn" data-target="upscale">Upscale</button>
+                <button class="nav-btn" data-target="watermark">Watermark</button>
+                <button class="nav-btn" data-target="rotate">Rotate</button>
+            </nav>
+        </header>
+
+        <main>
+            <!-- Home Section -->
+            <section id="home" class="view active">
+                <div class="hero">
+                    <h1>Powerful Image Tools</h1>
+                    <p>Select a tool to get started</p>
+                </div>
+                <div class="tools-grid">
+                    <div class="tool-card" data-tool="compress">
+                        <div class="icon">📉</div>
+                        <h3>Compress</h3>
+                        <p>Reduce file size handling KB/MB limits.</p>
+                    </div>
+                    <div class="tool-card" data-tool="crop">
+                        <div class="icon">✂️</div>
+                        <h3>Crop</h3>
+                        <p>Trim edges with preset ratios.</p>
+                    </div>
+                    <div class="tool-card" data-tool="resize">
+                        <div class="icon">📏</div>
+                        <h3>Resize</h3>
+                        <p>Change dimensions maintaining quality.</p>
+                    </div>
+                    <div class="tool-card" data-tool="convert">
+                        <div class="icon">🔄</div>
+                        <h3>Convert</h3>
+                        <p>Switch between JPG, PNG, WEBP.</p>
+                    </div>
+                    <div class="tool-card" data-tool="upscale">
+                        <div class="icon">⬆️</div>
+                        <h3>Upscale</h3>
+                        <p>Enhance resolution and clarity.</p>
+                    </div>
+                    <div class="tool-card" data-tool="watermark">
+                        <div class="icon">💧</div>
+                        <h3>Watermark</h3>
+                        <p>Add text or logo to your images.</p>
+                    </div>
+                    <div class="tool-card" data-tool="rotate">
+                        <div class="icon">🔃</div>
+                        <h3>Rotate</h3>
+                        <p>Rotate images 90°, 180°, or custom.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tool Interface Template (Shared Structure) -->
+            <!-- Compress Section -->
+            <section id="compress" class="view tool-view">
+                <h2>Compress Image</h2>
+                <div class="tool-workspace">
+                    <div class="preview-area">
+                        <div class="upload-box" id="compress-upload-box">
+                            <span class="upload-icon">📁</span>
+                            <p>Click to upload or drag & drop</p>
+                            <input type="file" id="compress-file" accept="image/*" hidden>
+                        </div>
+                        <div class="image-preview" id="compress-preview">
+                            <img id="compress-img" src="" alt="Preview">
+                        </div>
+                    </div>
+                    <div class="controls-area">
+                        <div class="control-group">
+                            <label>Max Size (KB)</label>
+                            <input type="number" id="compress-size" placeholder="e.g. 50">
+                        </div>
+                        <div class="control-group">
+                            <label>Quality (0-100)</label>
+                            <input type="range" id="compress-quality" min="1" max="100" value="80">
+                            <span id="compress-quality-val">80%</span>
+                        </div>
+                        <div class="control-group">
+                            <label>Output Format</label>
+                            <select id="compress-fmt">
+                                <option value="image/jpeg">JPG</option>
+                                <option value="image/png">PNG</option>
+                                <option value="image/webp">WEBP</option>
+                            </select>
+                        </div>
+                        <button class="action-btn" id="compress-action">Compress & Download image</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Crop Section -->
+            <section id="crop" class="view tool-view">
+                <h2>Crop Image</h2>
+                <div class="tool-workspace">
+                    <div class="preview-area">
+                        <div class="upload-box" id="crop-upload-box">
+                            <span class="upload-icon">📁</span>
+                            <p>Click to upload</p>
+                            <input type="file" id="crop-file" accept="image/*" hidden>
+                        </div>
+                        <div class="image-preview" id="crop-preview">
+                            <img id="crop-img" src="" alt="Preview">
+                        </div>
+                    </div>
+                    <div class="controls-area">
+                        <div class="control-group">
+                            <label>AspectRatio</label>
+                            <select id="crop-ratio">
+                                <option value="NaN">Free</option>
+                                <option value="1">1:1 (Square)</option>
+                                <option value="1.7777777777">16:9</option>
+                                <option value="1.3333333333">4:3</option>
+                                <option value="0.6666666667">2:3</option>
+                            </select>
+                        </div>
+                        <div class="control-group">
+                            <label>Output Format</label>
+                            <select id="crop-fmt">
+                                <option value="image/jpeg">JPG</option>
+                                <option value="image/png">PNG</option>
+                                <option value="image/webp">WEBP</option>
+                            </select>
+                        </div>
+                        <button class="action-btn" id="crop-action">Crop & Download</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Resize Section -->
+            <section id="resize" class="view tool-view">
+                <h2>Resize Image</h2>
+                <div class="tool-workspace">
+                    <div class="preview-area">
+                        <div class="upload-box" id="resize-upload-box">
+                            <span class="upload-icon">📁</span>
+                            <p>Click to upload</p>
+                            <input type="file" id="resize-file" accept="image/*" hidden>
+                        </div>
+                        <div class="image-preview" id="resize-preview">
+                            <img id="resize-img" src="" alt="Preview">
+                        </div>
+                    </div>
+                    <div class="controls-area">
+                        <div class="control-group">
+                            <label>Width (px)</label>
+                            <input type="number" id="resize-width">
+                        </div>
+                        <div class="control-group">
+                            <label>Height (px)</label>
+                            <input type="number" id="resize-height">
+                        </div>
+                        <div class="control-group">
+                            <label>Lock Aspect Ratio</label>
+                            <input type="checkbox" id="resize-lock" checked>
+                        </div>
+                        <div class="control-group">
+                            <label>Output Format</label>
+                            <select id="resize-fmt">
+                                <option value="image/jpeg">JPG</option>
+                                <option value="image/png">PNG</option>
+                                <option value="image/webp">WEBP</option>
+                            </select>
+                        </div>
+                        <button class="action-btn" id="resize-action">Resize & Download</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Convert Section -->
+            <section id="convert" class="view tool-view">
+                <h2>Convert Image</h2>
+                <div class="tool-workspace">
+                    <div class="preview-area">
+                        <div class="upload-box" id="convert-upload-box">
+                            <span class="upload-icon">📁</span>
+                            <p>Click to upload</p>
+                            <input type="file" id="convert-file" accept="image/*" hidden>
+                        </div>
+                        <div class="image-preview" id="convert-preview">
+                            <img id="convert-img" src="" alt="Preview">
+                        </div>
+                    </div>
+                    <div class="controls-area">
+                        <div class="control-group">
+                            <label>Target Format</label>
+                            <select id="convert-fmt">
+                                <option value="image/jpeg">JPG/JPEG</option>
+                                <option value="image/png">PNG</option>
+                                <option value="image/webp">WEBP</option>
+                            </select>
+                        </div>
+                        <div class="control-group">
+                            <label>Quality (0-100)</label>
+                            <input type="range" id="convert-quality" min="1" max="100" value="90">
+                            <span id="convert-quality-val">90%</span>
+                        </div>
+                        <button class="action-btn" id="convert-action">Convert & Download</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Upscale Section -->
+            <section id="upscale" class="view tool-view">
+                <h2>Upscale Image</h2>
+                <div class="tool-workspace">
+                    <div class="preview-area">
+                        <div class="upload-box" id="upscale-upload-box">
+                            <span class="upload-icon">📁</span>
+                            <p>Click to upload</p>
+                            <input type="file" id="upscale-file" accept="image/*" hidden>
+                        </div>
+                        <div class="image-preview" id="upscale-preview">
+                            <img id="upscale-img" src="" alt="Preview">
+                        </div>
+                    </div>
+                    <div class="controls-area">
+                        <div class="control-group">
+                            <label>Multiplier</label>
+                            <select id="upscale-factor">
+                                <option value="2">2x</option>
+                                <option value="4">4x</option>
+                            </select>
+                        </div>
+                        <p class="note">Uses bicubic interpolation for smoothing.</p>
+                        <button class="action-btn" id="upscale-action">Upscale & Download</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Watermark Section -->
+            <section id="watermark" class="view tool-view">
+                <h2>Add Watermark</h2>
+                <div class="tool-workspace">
+                    <div class="preview-area">
+                        <div class="upload-box" id="watermark-upload-box">
+                            <span class="upload-icon">📁</span>
+                            <p>Click to upload</p>
+                            <input type="file" id="watermark-file" accept="image/*" hidden>
+                        </div>
+                        <div class="image-preview" id="watermark-preview">
+                            <div class="canvas-wrapper">
+                                <canvas id="watermark-canvas"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="controls-area">
+                        <div class="control-group">
+                            <label>Text</label>
+                            <input type="text" id="wm-text" placeholder="Your Text Here">
+                        </div>
+                        <div class="control-group">
+                            <label>Font Size</label>
+                            <input type="range" id="wm-size" min="10" max="200" value="40">
+                        </div>
+                        <div class="control-group">
+                            <label>Color</label>
+                            <input type="color" id="wm-color" value="#ffffff">
+                        </div>
+                        <div class="control-group">
+                            <label>Position X</label>
+                            <input type="range" id="wm-x" min="0" max="100" value="50">
+                        </div>
+                        <div class="control-group">
+                            <label>Position Y</label>
+                            <input type="range" id="wm-y" min="0" max="100" value="50">
+                        </div>
+                        <div class="control-group">
+                            <label>Opacity</label>
+                            <input type="range" id="wm-opacity" min="0" max="1" step="0.1" value="1">
+                        </div>
+                        <div class="control-group">
+                            <label>Repetition</label>
+                            <div class="checkbox-wrapper">
+                                <input type="checkbox" id="wm-repeat"> <span>Repeat Watermark</span>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label>Output Format</label>
+                            <select id="watermark-fmt">
+                                <option value="image/jpeg">JPG</option>
+                                <option value="image/png">PNG</option>
+                                <option value="image/webp">WEBP</option>
+                            </select>
+                        </div>
+                        <button class="action-btn" id="watermark-action">Apply & Download</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Rotate Section -->
+            <section id="rotate" class="view tool-view">
+                <h2>Rotate Image</h2>
+                <div class="tool-workspace">
+                    <div class="preview-area">
+                        <div class="upload-box" id="rotate-upload-box">
+                            <span class="upload-icon">📁</span>
+                            <p>Click to upload</p>
+                            <input type="file" id="rotate-file" accept="image/*" hidden>
+                        </div>
+                        <div class="image-preview" id="rotate-preview">
+                            <img id="rotate-img" src="" alt="Preview">
+                        </div>
+                    </div>
+                    <div class="controls-area">
+                        <div class="control-group">
+                            <label>Rotation</label>
+                            <div class="btn-group">
+                                <button class="secondary-btn" id="rotate-left" title="Rotate Left 90°">↺ -90°</button>
+                                <button class="secondary-btn" id="rotate-right" title="Rotate Right 90°">↻ +90°</button>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label>Output Format</label>
+                            <select id="rotate-fmt">
+                                <option value="image/jpeg">JPG</option>
+                                <option value="image/png">PNG</option>
+                                <option value="image/webp">WEBP</option>
+                            </select>
+                        </div>
+                        <button class="action-btn" id="rotate-action">Rotate & Download</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Size Comparison Modal -->
+    <div id="size-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3>Compression Complete!</h3>
+            <div class="comparison-grid">
+                <div class="comp-box">
+                    <h4>Before</h4>
+                    <p id="size-before">0 KB</p>
+                </div>
+                <div class="arrow">➔</div>
+                <div class="comp-box">
+                    <h4>After</h4>
+                    <p id="size-after">0 KB</p>
+                </div>
+            </div>
+            <p id="size-savings" class="savings-text"></p>
+            <div class="modal-actions">
+                <button id="modal-download" class="action-btn">Download</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
